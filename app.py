@@ -70,7 +70,7 @@ def index():
     path, dirs, files = next(os.walk(trainedImagePath))
     file_count = len(files)
     image_names = os.listdir('./train')
-    return render_template('imageAI.html', filecount=file_count, files=files, image_names=image_names)
+    return render_template('ImageAI.html', filecount=file_count, files=files, image_names=image_names)
 
 ## upload train images as well as check for existance
 @app.route("/upload", methods=['POST'])
@@ -180,7 +180,7 @@ def uploaded():
                         #print(returnValue)
             
             ## display output 
-            return render_template("output.html", image_names=imgList, returnValue=imgValue, image_upload=filename)
+            return render_template("Output.html", image_names=imgList, returnValue=imgValue, image_upload=filename)
         else:
             return 'File not allowed'
 

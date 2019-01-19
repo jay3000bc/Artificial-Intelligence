@@ -40,19 +40,6 @@ def image_resize(image, width = None, height = None, inter = cv2.INTER_AREA):
     if width is None and height is None:
         return image
 
-    # # check to see if the width is None
-    # if width is None:
-    #     # calculate the ratio of the height and construct the
-    #     # dimensions
-    #     r = height / float(h)
-    #     dim = (int(w * r), height)
-
-    # # otherwise, the height is None
-    # else:
-    #     # calculate the ratio of the width and construct the
-    #     # dimensions
-    #     r = width / float(w)
-    #     dim = (width, int(h * r))
     dim = (int(w/2), int(h/2))
     # resize the image
     resized = cv2.resize(image, dim, interpolation = inter)
@@ -102,7 +89,7 @@ def index():
     path, dirs, files = next(os.walk(trainedImagePath))
     file_count = len(files)
     image_names = os.listdir('./train')
-    return render_template('imageAI.html', filecount=file_count, files=files, image_names=image_names)
+    return render_template('ImageAI.html', filecount=file_count, files=files, image_names=image_names)
 
 ## upload train images as well as check for existance
 @app.route("/upload", methods=['POST'])
@@ -222,7 +209,7 @@ def uploaded():
                         #print(returnValue)
             
             ## display output 
-            return render_template("output.html", image_names=imgList, returnValue=imgValue, image_upload=filename)
+            return render_template("Output.html", image_names=imgList, returnValue=imgValue, image_upload=filename)
         else:
             return 'File not allowed'
 
@@ -241,7 +228,7 @@ def send_image(filename):
 @app.route('/output')
 def get_gallery(imgList):
     print(imgList)
-    return render_template("output.html", image_names=imgList)
+    return render_template("Output.html", image_names=imgList)
 
 # if __name__ == "__main__":
 #     app.run(port=4555, debug=True)

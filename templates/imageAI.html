@@ -76,14 +76,10 @@
                 {% endfor %}
               </ul>
             </div>
-            <div class="uploadSection">
+            <!-- upload training images -->
+            <div class="uploadSection">  
               <form id="upload-formTrain" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data" onsubmit="showAnimTrain();">
-                <!-- <div class="col-sm-12 no-pad-lf">
-                  <div class="form-group inputDnD">
-                    <label class="sr-only" for="uploadSmall">File Upload</label>
-                    <input type="file" name="fileToUpload" class="form-control-fileTrain text-primary font-weight-bold" id="uploadSmall" required multiple accept="image/*" data-title="Click or Drag to upload one or more images">
-                  </div>
-                </div> -->
+                
                 <div class="col-sm-12 no-pad-lf upload-main">
                   <div class="form-group upload-form">
                     <input type="file" name="fileToUpload" class="form-control-fileTrain text-primary font-weight-bold" id="uploadSmall" required multiple accept="image/*" data-title="Click or Drag to upload one or more images">
@@ -95,13 +91,6 @@
                   <button id="btnSubmitTrainDis" type="button" class="btn btn-success common-btn upload-btn disabled">Upload Now</button>
                 </div>
               </form>
-              <!-- <form id="upload-formTrainBtn" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data" onsubmit="showAnimTrain();">
-                <div class="col-sm-12 no-pad-lf upload-btn-wrapper">
-                    <label class="sr-only" for="uploadSmallBtn">File Upload</label>
-                    <input type="file" name="fileToUpload" class="form-control-fileTrainBtn text-primary font-weight-bold" id="uploadSmallBtn" required multiple accept="image/*">
-                  <button type="button" class="btn btn-success common-btn upload-btn" >Upload one or more poster to train</button>
-                </div>
-              </form> -->
             </div>
 
             <div class="col-sm-12 no-pad-lf second-form">
@@ -159,12 +148,6 @@
               
               <div class="uploadSection">
                 <form id="uploadCheckBig" action="{{ url_for('uploaded') }}" method="POST" enctype="multipart/form-data" onsubmit="showAnim();">
-                  <!-- <div class="col-sm-12 no-pad-lf">
-                    <div class="form-group inputDnD">
-                      <label class="sr-only" for="uploadBig">File Upload</label>
-                        <input type="file" name="fileToUpload" class="form-control-file text-primary font-weight-bold" id="uploadBig" required multiple accept="image/*" data-title="Click or Drag to upload one or more images">
-                    </div>
-                  </div> -->
                   <div class="col-sm-12 no-pad-lf upload-main">
                     <div class="form-group upload-form">
                       <input type="file" name="fileToUpload" class="form-control-file text-primary font-weight-bold" id="uploadBig" required multiple accept="image/*" data-title="Click or Drag to upload one or more images">
@@ -181,21 +164,7 @@
                       {% endif %}
                     </div>
                 </form>
-                <!-- <form id="uploadCheckBigBtn" action="{{ url_for('uploaded') }}" method="POST" enctype="multipart/form-data" onsubmit="showAnim();">
-                  <div class="col-sm-12 no-pad-lf upload-btn-wrapper">
-                    <label class="sr-only" for="uploadBigBtn">File Upload</label>
-                    <input type="file" name="fileToUpload" class="form-control-fileBtn text-primary font-weight-bold" id="uploadBigBtn" required multiple accept="image/*" style="width: 327px;" />
-                    <button type="button" class="btn btn-primary common-btn compare-btn">Upload one or more photos to compare</button>
-                    {% if filecountUp > 0 and filecount > 0 %}
-                      <a href="{{url_for('select')}}" class="btn btn-primary common-btn next-btn">Next <i class="fas fa-angle-double-right"></i></a>
-                    {% else %}
-                      <button type="button" class="btn btn-primary common-btn disabled next-btn">Next <i class="fas fa-angle-double-right"></i></button>
-                    {% endif %}
-                  </div>
-                </form> -->
               </div>
-
-
             </div>
           </div>
         </div>
@@ -283,17 +252,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
     <script type="text/javascript">
       function readUrl(input) {
-
-        // if (input.files && input.files[0]) {
-        //   var reader = new FileReader();
-        //   reader.onload = function (e) {
-        //     var imgData = e.target.result;
-        //     var imgName = input.files[0].name;
-        //     input.setAttribute("data-title", imgName);
-        //     console.log(e.target.result);
-        //   };
-        //   reader.readAsDataURL(input.files[0]);
-        // }
+        
       }
 
       var fileSelected = 1;
@@ -308,12 +267,6 @@
         $('#btnSubmitTrainDis').hide();
       });
 
-      // $('input.form-control-fileTrainBtn').change(function(){
-      //   var files = $(this)[0].files;
-      //   fileSelected = files.length;
-      //   $('#upload-formTrainBtn').submit();
-      // });
-
       $('input.form-control-file').change(function(){
         var files = $(this)[0].files;
         fileSelected = files.length;
@@ -324,12 +277,6 @@
         $('#btnSubmitUp').show();
         $('#btnSubmitUpDis').hide();
       });
-
-      // $('input.form-control-fileBtn').change(function(){
-      //   var files = $(this)[0].files;
-      //   fileSelected = files.length;
-      //   $('#uploadCheckBigBtn').submit();
-      // });
 
       $("#uploadSmall").change(function(){
           var input = document.getElementById('uploadSmall');

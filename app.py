@@ -148,8 +148,6 @@ def upload():
     #print(request.url)
     if not os.path.isdir(target):
             os.mkdir(target)
-    # else:
-    #     flash("Couldn't create upload directory: {}".format(target))
     
     if not os.path.isdir(trained):
             os.mkdir(trained)
@@ -158,9 +156,8 @@ def upload():
          # check if the post request has the file part
         if 'fileToUpload' not in request.files:
             flash('No file Selected..')
-            return redirect(url_for('index')) #redirect(request.url)
+            return redirect(url_for('index'))
 
-        # file = request.files['fileToUpload']
         fileToUpload = request.files.getlist('fileToUpload')
         
         alreadyTrained = 0
@@ -179,8 +176,6 @@ def upload():
                 file.save(destination)
                 copy2(destination, destinationTrain)
                 ## after upload to 'uploads' folder check for duplicates
-                #img1 = cv2.imread(destination, 0)             # queryImage
-                #imgT = cv2.imread(destination)                  # queryImage
                 imgT = cv2.imread(destinationTrain)                  # queryImage
                 (h, w) = imgT.shape[:2]
                 if w < 400:
@@ -189,12 +184,10 @@ def upload():
                     ## resize the image
                     imgT = image_resize(imgT, height = 250)
                     # save the resized image
-                    #cv2.imwrite(destination, imgT)
-                    #img1 = cv2.imread(destination)
                     cv2.imwrite(destinationTrain, imgT)
                     img1 = cv2.imread(destinationTrain)
-
-                    #alreadyTrained = duplicateTrain(destination, trained, img1, alreadyTrained)
+                    
+                    #Check if image is already trained
                     alreadyTrained = duplicateTrain(destinationTrain, trained, img1, alreadyTrained)
             else:
                 return 'File not allowed'
@@ -217,8 +210,6 @@ def uploaded():
     
     if not os.path.isdir(target):
             os.mkdir(target)
-    # else:
-    #     flash("Couldn't create upload directory: {}".format(target))
     
     if not os.path.isdir(poster):
             os.mkdir(poster)
@@ -227,9 +218,8 @@ def uploaded():
          # check if the post request has the file part
         if 'fileToUpload' not in request.files:
             flash('No file Selected...')
-            return redirect(url_for('index')) #redirect(request.url)
+            return redirect(url_for('index'))
 
-        #file = request.files['fileToUpload']
         fileToUpload = request.files.getlist('fileToUpload')
         
         alreadyTrainedUp  = 0
@@ -246,15 +236,8 @@ def uploaded():
                 destination         = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 destinationSmall    = os.path.join(app.config['POSTER_SMALL'], filename)
                 file.save(destination)
-                #print(destination)
+                # keep the original for final comparision
                 copy2(destination, destinationSmall)
-                ## after upload to 'uploads' folder check for matching
-                #img1 = cv2.imread(destination, 0)             # queryImage
-                #img1 = cv2.imread(destination)                  # queryImage
-                ## resize the image            
-                #img1 = image_resize(img1, height = 900)
-                # save the resized image
-                #cv2.imwrite(destination, img1)
                 
                 imgB = cv2.imread(destination)                  # queryImage
 
@@ -267,7 +250,6 @@ def uploaded():
                     imgB = image_resize(imgB, width= 960)
                     # save the resized image
                     cv2.imwrite(destination, imgB)
-                #     img1 = cv2.imread(destination)
 
                 imgT = cv2.imread(destinationSmall)                  # queryImage
                 (hs, ws) = imgT.shape[:2]
@@ -277,29 +259,8 @@ def uploaded():
                     cv2.imwrite(destinationSmall, imgT)
                     img1 = cv2.imread(destinationSmall)
                     
-                    #alreadyTrainedUp = duplicate(destination, poster, img1, alreadyTrainedUp)
+                    # Check if image already there
                     alreadyTrainedUp = duplicate(destination, poster, destinationSmall, posterMid, img1, alreadyTrainedUp)
-                # if not os.listdir("./poster"):
-                #     copy2(destination, poster)
-                # else:
-                #     ## Find All images from the train folder (JPEG, JPG, PNG, GIF and BMP)
-                #     for file in os.listdir("./poster"):
-                #         if file.lower().endswith('.jpg') or file.lower().endswith('.jpeg') or file.lower().endswith('.png') or file.lower().endswith('.gif') or file.lower().endswith('.bmp'):
-                #             newImage = os.path.join('poster/', file)
-                #             print(newImage)
-                #             print('--------')
-                #             img2 = cv2.imread(newImage)     # trainImage
-                #             returnValue = computeImage(img1, img2)
-                            
-                #             if returnValue >= 75:
-                #                 alreadyTrainedUp += 1                 
-                #                 # flash('Image already Uploaded.')
-                #                 # return redirect(url_for('index'))
-                #                 ## return '<h1> Image already trained.. </h1> <br/> <h3><a href="/"> Back to Home </a></h3>'
-                #             else:
-                #                 destFile.append(destination)
-                #     # copy2(destination, poster)
-                #return redirect(url_for('index'))
             else:
                 return 'File not allowed'
 
@@ -311,7 +272,6 @@ def uploaded():
 
     return 'Error'
 
-# def duplicate(destinationSmall, posterSmall, destination, poster, img1, alreadyTrainedUp):
 def duplicate(destination, poster, destinationSmall, posterMid, img1, alreadyTrainedUp):
     if not os.listdir("./posterMid"):
         copy2(destinationSmall, posterMid)
@@ -321,7 +281,7 @@ def duplicate(destination, poster, destinationSmall, posterMid, img1, alreadyTra
         for file in os.listdir("./posterMid"):
             if file.lower().endswith('.jpg') or file.lower().endswith('.jpeg') or file.lower().endswith('.png') or file.lower().endswith('.gif') or file.lower().endswith('.bmp'):
                 newImage = os.path.join('posterMid/', file)
-                # img2 = cv2.imread(newImage, 0)     # trainImage
+                
                 img2 = cv2.imread(newImage)     # trainImage
                 returnValue = computeImage(img1, img2)
                 
@@ -333,30 +293,6 @@ def duplicate(destination, poster, destinationSmall, posterMid, img1, alreadyTra
         copy2(destination, poster)
 
     return alreadyTrainedUp
-
-# def duplicate(destination, poster, img1, alreadyTrainedUp):
-#     if not os.listdir("./poster"):
-#         copy2(destination, poster)
-#         #copy2(destinationSmall, posterSmall)
-#     else:
-#         ## Find All images from the train folder (JPEG, JPG, PNG, GIF and BMP)
-#         for file in os.listdir("./poster"):
-#             if file.lower().endswith('.jpg') or file.lower().endswith('.jpeg') or file.lower().endswith('.png') or file.lower().endswith('.gif') or file.lower().endswith('.bmp'):
-#                 newImage = os.path.join('poster/', file)
-#                 # img2 = cv2.imread(newImage, 0)     # trainImage
-#                 img2 = cv2.imread(newImage)     # trainImage
-#                 returnValue = computeImage(img1, img2)
-#                 print(returnValue)
-#                 if returnValue >= 75:
-#                     alreadyTrainedUp += 1
-#                     return alreadyTrainedUp
-#                 # else:
-#                 #     copy2(destination, poster)
-        
-#         copy2(destination, poster)
-#         #copy2(destinationSmall, posterSmall)
-
-#     return alreadyTrainedUp
 
 def duplicateTrain(destination, trained, img1, alreadyTrained):
     if not os.listdir("./train"):
@@ -419,14 +355,7 @@ def compare():
                         # if returnValue >= 1.63 :
                         imgList.append(file)
                         imgValue.append(str(round(returnValue, 2)))
-                            #print(newImage)
-                            #print(returnValue)
-                        # else:
-                        #     imgListNo.append(file)
-                        #     imgValueNo.append(str(round(returnValue, 2)))
-                
-                # Calculate total matched trained images
-                # matchedSize += len(imgList)
+                            
                 # Delete image from poster folder
                 os.remove(destination)
                 os.remove(destinationMid)
@@ -482,11 +411,7 @@ def send_image(filename):
 def poster_image(filename):
     return send_from_directory("poster", filename)
 
-# @app.route('/output')
-# def get_gallery(imgList):
-#     print(imgList)
-#     return render_template("output.html", image_names=imgList)
 
 if __name__ == "__main__":
-    app.run(debug=True)
-    #app.run(port=4996, host='0.0.0.0')
+    #app.run(debug=True)
+    app.run(port=4996, host='0.0.0.0')
